@@ -19,8 +19,12 @@ namespace Game_Of_Life
         string fileName = null;
 
         // Drawing colors
+        //Change these based on user input from dialog box
         Color gridColor = Color.Black;
         Color cellColor = Color.Gray;
+
+        //Color numberColor = Color.Black;
+        //numberColor = white on button click
 
         // The Timer class
         Timer timer = new Timer();
@@ -50,6 +54,7 @@ namespace Game_Of_Life
             //apply rules of game of life
             //turn cells off etc
 
+            //reset the scratchpad
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -57,6 +62,7 @@ namespace Game_Of_Life
                     scratchpad[x, y] = false;
                 }
             }
+
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -279,6 +285,9 @@ namespace Game_Of_Life
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //change background back to white
+            graphicsPanel1.BackColor = Color.White;
+
             universe = null;
             universe = (bool[,])Array.CreateInstance(typeof(bool), userX, userY);
 
@@ -534,6 +543,9 @@ namespace Game_Of_Life
 
         private void newToolStripButton_Click(object sender, EventArgs e)
         {
+            //change background back to white
+            graphicsPanel1.BackColor = Color.White;
+
             StartButton.Image = Game_Of_Life.Properties.Resources.Start;
             PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
             universe = null;
@@ -843,6 +855,17 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        private void backgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = graphicsPanel1.BackColor;
 
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+            }
+            
+
+        }
     }
 }
