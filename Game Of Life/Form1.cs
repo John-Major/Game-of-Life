@@ -50,7 +50,13 @@ namespace Game_Of_Life
             //apply rules of game of life
             //turn cells off etc
 
-
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    scratchpad[x, y] = false;
+                }
+            }
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
