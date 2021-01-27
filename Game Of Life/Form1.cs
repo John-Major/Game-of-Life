@@ -14,6 +14,8 @@ namespace Game_Of_Life
         bool[,] universe = new bool[20, 20];
         bool[,] scratchpad = new bool[20, 20];
 
+        int numAlive = 0;
+
         //checking if file has been saved before
         bool savedAs = false;
         string fileName = null;
@@ -45,6 +47,9 @@ namespace Game_Of_Life
             timer.Tick += Timer_Tick;
             timer.Enabled = false;
 
+            //Starting status labels
+            IntervalStatusLabel.Text = "Interval: " + timer.Interval.ToString();
+
         }
 
         // Calculate the next generation of cells
@@ -62,7 +67,19 @@ namespace Game_Of_Life
                     scratchpad[x, y] = false;
                 }
             }
-
+            int tempDead = 0;
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    if (universe[x, y] == false)
+                    {
+                        tempDead++;
+                    }
+                }
+            }
+            numAlive = userX*userY - tempDead;
+            AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -276,7 +293,20 @@ namespace Game_Of_Life
                 // Toggle the cell's state
                 int intX = (int)floatX;
                 int intY = (int)floatY;
-                universe[intX, intY] = !universe[intX, intY];
+                
+                if(universe[intX, intY] = !universe[intX, intY])
+                {
+                    numAlive++;
+                    AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+                } else
+                {
+                    if(numAlive > 0)
+                    {
+                        numAlive--;
+                        AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+                    }
+                    
+                }
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
@@ -287,12 +317,15 @@ namespace Game_Of_Life
         {
             //change background back to white
             graphicsPanel1.BackColor = Color.White;
+            gridColor = Color.Black;
+            cellColor = Color.Gray;
 
             universe = null;
             universe = (bool[,])Array.CreateInstance(typeof(bool), userX, userY);
 
             generations = 0;
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            AliveStatusLabel.Text= "Alive: 0";
 
             timer.Enabled = false;
 
@@ -545,6 +578,8 @@ namespace Game_Of_Life
         {
             //change background back to white
             graphicsPanel1.BackColor = Color.White;
+            gridColor = Color.Black;
+            cellColor = Color.Gray;
 
             StartButton.Image = Game_Of_Life.Properties.Resources.Start;
             PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
@@ -553,6 +588,7 @@ namespace Game_Of_Life
 
             generations = 0;
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            AliveStatusLabel.Text = "Alive: 0";
 
             timer.Enabled = false;
 
@@ -864,8 +900,93 @@ namespace Game_Of_Life
             {
                 graphicsPanel1.BackColor = dlg.Color;
             }
-            
 
+            graphicsPanel1.Invalidate();
+        }
+
+        private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = gridColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                gridColor = dlg.Color;
+            }
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void livingCellsColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = cellColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                cellColor = dlg.Color;
+            }
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void backgroundColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = graphicsPanel1.BackColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                graphicsPanel1.BackColor = dlg.Color;
+            }
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void gridColorToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = gridColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                gridColor = dlg.Color;
+            }
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void livingCellColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+            dlg.Color = cellColor;
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                cellColor = dlg.Color;
+            }
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void headsUpDisplayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IntervalStatusLabel_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
