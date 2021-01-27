@@ -969,24 +969,33 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void headsUpDisplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void label4_Click(object sender, EventArgs e)
-        {
+        
 
+        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ModalDialog dlg = new ModalDialog();
+            
+            if(DialogResult.OK == dlg.ShowDialog())
+            {
+                int x = 0;
+            }
         }
 
-        private void IntervalStatusLabel_Click(object sender, EventArgs e)
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            
+            OptionsModal dlg = new OptionsModal();
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+                int x = 0;
+            }
         }
     }
 }
