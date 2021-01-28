@@ -17,7 +17,7 @@ namespace Game_Of_Life
         int numAlive = 0;
 
         //Variables for seeds
-        decimal randomSeed = 0;
+        decimal randomSeed = 1;
 
         //checking if file has been saved before
         bool savedAs = false;
@@ -52,6 +52,7 @@ namespace Game_Of_Life
 
             //Starting status labels
             IntervalStatusLabel.Text = "Interval: " + timer.Interval.ToString();
+            SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
 
         }
 
@@ -1024,6 +1025,35 @@ namespace Game_Of_Life
             {
                 int x = 0;
             }
+        }
+
+        private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+
+                    universe[x, y] = false;
+
+                }
+            }
+            SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
+            Random seededRand = new Random((int)randomSeed);
+
+
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    if (seededRand.Next() % 2 == 0)
+                    {
+                        universe[x, y] = true;
+                    }
+                }
+            }
+
+            graphicsPanel1.Invalidate();
         }
     }
 }
