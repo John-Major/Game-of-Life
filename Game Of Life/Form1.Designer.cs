@@ -44,6 +44,8 @@ namespace Game_Of_Life
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.headsUpDisplayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.GridToggleView = new System.Windows.Forms.ToolStripMenuItem();
+            this.NeighborCountView = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -180,7 +182,9 @@ namespace Game_Of_Life
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.headsUpDisplayToolStripMenuItem});
+            this.headsUpDisplayToolStripMenuItem,
+            this.GridToggleView,
+            this.NeighborCountView});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -191,6 +195,20 @@ namespace Game_Of_Life
             this.headsUpDisplayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.headsUpDisplayToolStripMenuItem.Text = "HUD";
             this.headsUpDisplayToolStripMenuItem.Click += new System.EventHandler(this.headsUpDisplayToolStripMenuItem_Click);
+            // 
+            // GridToggleView
+            // 
+            this.GridToggleView.Name = "GridToggleView";
+            this.GridToggleView.Size = new System.Drawing.Size(180, 22);
+            this.GridToggleView.Text = "Grid";
+            this.GridToggleView.Click += new System.EventHandler(this.GridToggleView_Click);
+            // 
+            // NeighborCountView
+            // 
+            this.NeighborCountView.Name = "NeighborCountView";
+            this.NeighborCountView.Size = new System.Drawing.Size(180, 22);
+            this.NeighborCountView.Text = "Neighbor Count";
+            this.NeighborCountView.Click += new System.EventHandler(this.NeighborCountView_Click);
             // 
             // settingsToolStripMenuItem
             // 
@@ -553,6 +571,8 @@ namespace Game_Of_Life
         private System.Windows.Forms.Label CellCountLabel;
         private System.Windows.Forms.Label BoundaryTypeLabel;
         private System.Windows.Forms.Label UniverseSizeLabel;
+        private System.Windows.Forms.ToolStripMenuItem GridToggleView;
+        private System.Windows.Forms.ToolStripMenuItem NeighborCountView;
     }
 }
 

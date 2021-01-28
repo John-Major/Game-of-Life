@@ -8,6 +8,8 @@ namespace Game_Of_Life
 {
     public partial class Form1 : Form
     {
+
+        #region StartingVariables
         // The universe array
         int userX = 20;
         int userY = 20;
@@ -23,10 +25,12 @@ namespace Game_Of_Life
 
         //Variables for options
         int interval = 500;
-        bool isChecked = false;
+       
 
         //Variables for view
         bool HUD_toggle = true;
+        bool Grid_toggle = true;
+        bool Neighbor_toggle = true;
 
         //checking if file has been saved before
         bool savedAs = false;
@@ -43,7 +47,7 @@ namespace Game_Of_Life
         // Generation count
         int generations = 0;
 
-        
+        #endregion
 
         public Form1()
         {
@@ -129,6 +133,9 @@ namespace Game_Of_Life
 
             // Increment generation count
             generations++;
+            GenerationsLabel.Text = "Generations: " + generations.ToString();
+            CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
+
 
             // Update status strip generations
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
@@ -194,6 +201,7 @@ namespace Game_Of_Life
 
             // Update status strip generations
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
             graphicsPanel1.Invalidate();
         }
 
@@ -325,42 +333,86 @@ namespace Game_Of_Life
 
 
 
-
-            // Iterate through the universe in the y, top to bottom
-            for (int y = 0; y < universe.GetLength(1); y++)
+            
+            if (isFinite)
             {
-                // Iterate through the universe in the x, left to right
-                for (int x = 0; x < universe.GetLength(0); x++)
+                //FINITE PAINT THE UNIVERSE
+                for (int y = 0; y < universe.GetLength(1); y++)
                 {
-                    // A rectangle to represent each cell in pixels
-                    RectangleF cellRect = Rectangle.Empty;
-                    //Rectangle cellRect = Rectangle.Empty;
-                    cellRect.X = (float)x * cellWidth;
-                    cellRect.Y = (float)y * cellHeight;
-                    cellRect.Width = cellWidth;
-                    cellRect.Height = cellHeight;
-
-                    // Fill the cell with a brush if alive
-                    if (universe[x, y] == true)
+                    // Iterate through the universe in the x, left to right
+                    for (int x = 0; x < universe.GetLength(0); x++)
                     {
-                        e.Graphics.FillRectangle(cellBrush, cellRect);
-                        //puts number of neighbors in center of rectangle if there are more than 0 neighbors
-                        if (CountNeighborsFinite(x, y) != 0)
-                            e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
+                        // A rectangle to represent each cell in pixels
+                        RectangleF cellRect = Rectangle.Empty;
+                        //Rectangle cellRect = Rectangle.Empty;
+                        cellRect.X = (float)x * cellWidth;
+                        cellRect.Y = (float)y * cellHeight;
+                        cellRect.Width = cellWidth;
+                        cellRect.Height = cellHeight;
+
+                        // Fill the cell with a brush if alive
+                        if (universe[x, y] == true)
+                        {
+                            e.Graphics.FillRectangle(cellBrush, cellRect);
+                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                            if (CountNeighborsFinite(x, y) != 0)
+                                e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
+
+                        }
+                        else
+                        {
+                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                            if (CountNeighborsFinite(x, y) != 0)
+                                e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                        }
+
+                        // Outline the cell with a pen
+                        e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
 
                     }
-                    else
+                }
+            } else
+            {
+                //TORODAL PAINT THE UNIVERSE
+
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    // Iterate through the universe in the x, left to right
+                    for (int x = 0; x < universe.GetLength(0); x++)
                     {
-                        //puts number of neighbors in center of rectangle if there are more than 0 neighbors
-                        if (CountNeighborsFinite(x, y) != 0)
-                            e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                        // A rectangle to represent each cell in pixels
+                        RectangleF cellRect = Rectangle.Empty;
+                        //Rectangle cellRect = Rectangle.Empty;
+                        cellRect.X = (float)x * cellWidth;
+                        cellRect.Y = (float)y * cellHeight;
+                        cellRect.Width = cellWidth;
+                        cellRect.Height = cellHeight;
+
+                        // Fill the cell with a brush if alive
+                        if (universe[x, y] == true)
+                        {
+                            e.Graphics.FillRectangle(cellBrush, cellRect);
+                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                            if (CountNeighborsFinite(x, y) != 0)
+                                e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
+
+                        }
+                        else
+                        {
+                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                            if (CountNeighborsFinite(x, y) != 0)
+                                e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                        }
+
+                        // Outline the cell with a pen
+                        e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
+
                     }
-
-                    // Outline the cell with a pen
-                    e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
-
                 }
             }
+           
+
+           
             // Cleaning up pens and brushes
             gridPen.Dispose();
             cellBrush.Dispose();
@@ -1091,8 +1143,14 @@ namespace Game_Of_Life
 
             ModalDialog dlg = new ModalDialog();
 
+            
+
             if (DialogResult.OK == dlg.ShowDialog())
             {
+                int tempDead = 0;
+                
+                
+
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     for (int y = 0; y < universe.GetLength(1); y++)
@@ -1104,6 +1162,8 @@ namespace Game_Of_Life
                 }
                 randomSeed = dlg.Seed;
                 SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
+                
+
                 Random seededRand = new Random((int)randomSeed);
 
 
@@ -1118,10 +1178,29 @@ namespace Game_Of_Life
                     }
                 }
 
+                //count number alive in new universe
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    for (int y = 0; y < universe.GetLength(1); y++)
+                    {
+                        if (universe[x, y] == false)
+                        {
+                            tempDead++;
+                        }
+                    }
+                }
+
+                GenerationsLabel.Text = "Generations: " + generations.ToString();
+                numAlive = userX * userY - tempDead;
+                AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+                CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
+
                 graphicsPanel1.Invalidate();
+                statusStrip1.Invalidate();
             }
         }
 
+        //Randomize universe from current seed
         private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             for (int x = 0; x < universe.GetLength(0); x++)
@@ -1153,6 +1232,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Randomize Universe based on time in miliseconds
         private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             for (int x = 0; x < universe.GetLength(0); x++)
@@ -1184,8 +1264,10 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
-        #endregion 
+        #endregion
 
+        #region OptionsAndViewMenus
+        //Opens Options Dialog and sets interval, width, and height of form
         private void optionsMenu_Click(object sender, EventArgs e)
         {
 
@@ -1235,6 +1317,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Toggles HUD display
         private void headsUpDisplayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (HUD_toggle)
@@ -1258,5 +1341,56 @@ namespace Game_Of_Life
 
 
         }
+
+        
+        //Toggles Grid 
+        private void GridToggleView_Click(object sender, EventArgs e)
+        {
+            if (Grid_toggle)
+            {
+                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
+                GenerationsLabel.Visible = false;
+                CellCountLabel.Visible = false;
+                BoundaryTypeLabel.Visible = false;
+                UniverseSizeLabel.Visible = false;
+                HUD_toggle = !HUD_toggle;
+            }
+            else
+            {
+                headsUpDisplayToolStripMenuItem.Image = null;
+                GenerationsLabel.Visible = true;
+                CellCountLabel.Visible = true;
+                BoundaryTypeLabel.Visible = true;
+                UniverseSizeLabel.Visible = true;
+                HUD_toggle = !HUD_toggle;
+            }
+            graphicsPanel1.Invalidate();
+        }
+
+        //Toggles Neighbor count
+        private void NeighborCountView_Click(object sender, EventArgs e)
+        {
+            if (Neighbor_toggle)
+            {
+                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
+                GenerationsLabel.Visible = false;
+                CellCountLabel.Visible = false;
+                BoundaryTypeLabel.Visible = false;
+                UniverseSizeLabel.Visible = false;
+                HUD_toggle = !HUD_toggle;
+            }
+            else
+            {
+                headsUpDisplayToolStripMenuItem.Image = null;
+                GenerationsLabel.Visible = true;
+                CellCountLabel.Visible = true;
+                BoundaryTypeLabel.Visible = true;
+                UniverseSizeLabel.Visible = true;
+                HUD_toggle = !HUD_toggle;
+            }
+            graphicsPanel1.Invalidate();
+        }
+
+        #endregion
     }
 }
