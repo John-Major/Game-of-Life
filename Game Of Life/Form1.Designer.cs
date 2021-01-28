@@ -232,7 +232,7 @@ namespace Game_Of_Life
             this.optionsMenuItem.Name = "optionsMenuItem";
             this.optionsMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsMenuItem.Text = "Options";
-            this.optionsMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.optionsMenuItem.Click += new System.EventHandler(this.optionsMenu_Click);
             // 
             // randomizeToolStripMenuItem
             // 

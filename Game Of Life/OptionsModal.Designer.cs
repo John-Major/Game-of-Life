@@ -92,6 +92,11 @@ namespace Game_Of_Life
             // timerIntervalNumericUpDown
             // 
             this.timerIntervalNumericUpDown.Location = new System.Drawing.Point(224, 46);
+            this.timerIntervalNumericUpDown.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
             this.timerIntervalNumericUpDown.Name = "timerIntervalNumericUpDown";
             this.timerIntervalNumericUpDown.Size = new System.Drawing.Size(92, 20);
             this.timerIntervalNumericUpDown.TabIndex = 8;
@@ -99,6 +104,11 @@ namespace Game_Of_Life
             // widthUniverseNumericUpDown
             // 
             this.widthUniverseNumericUpDown.Location = new System.Drawing.Point(224, 78);
+            this.widthUniverseNumericUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.widthUniverseNumericUpDown.Name = "widthUniverseNumericUpDown";
             this.widthUniverseNumericUpDown.Size = new System.Drawing.Size(92, 20);
             this.widthUniverseNumericUpDown.TabIndex = 9;
@@ -106,6 +116,11 @@ namespace Game_Of_Life
             // heightUniverseNumericUpDown
             // 
             this.heightUniverseNumericUpDown.Location = new System.Drawing.Point(224, 108);
+            this.heightUniverseNumericUpDown.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.heightUniverseNumericUpDown.Name = "heightUniverseNumericUpDown";
             this.heightUniverseNumericUpDown.Size = new System.Drawing.Size(92, 20);
             this.heightUniverseNumericUpDown.TabIndex = 10;

@@ -19,6 +19,10 @@ namespace Game_Of_Life
         //Variables for seeds
         decimal randomSeed = 1;
 
+        //Variables for options
+        int interval = 500;
+       
+
         //checking if file has been saved before
         bool savedAs = false;
         string fileName = null;
@@ -46,7 +50,7 @@ namespace Game_Of_Life
             this.Text = Properties.Resources.AppTitle;
 
             // Setup the timer
-            timer.Interval = 500; // milliseconds, ten times a second this gets called
+            timer.Interval = interval; // milliseconds, ten times a second this gets called
             timer.Tick += Timer_Tick;
             timer.Enabled = false;
 
@@ -986,6 +990,12 @@ namespace Game_Of_Life
 
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            timer.Enabled = false;
+            StartButton.Image = Game_Of_Life.Properties.Resources.Start;
+            PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
+
+
             ModalDialog dlg = new ModalDialog();
 
             if (DialogResult.OK == dlg.ShowDialog())
@@ -1016,16 +1026,6 @@ namespace Game_Of_Life
                 }
 
                 graphicsPanel1.Invalidate();
-            }
-        }
-
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            OptionsModal dlg = new OptionsModal();
-
-            if (DialogResult.OK == dlg.ShowDialog())
-            {
-                int x = 0;
             }
         }
 
@@ -1088,6 +1088,54 @@ namespace Game_Of_Life
                     }
                 }
             }
+            graphicsPanel1.Invalidate();
+        }
+        private void optionsMenu_Click(object sender, EventArgs e)
+        {
+            
+            timer.Enabled = false;
+            StartButton.Image = Game_Of_Life.Properties.Resources.Start;
+            PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
+
+            OptionsModal dlg = new OptionsModal();
+            dlg.Interval = interval;
+            dlg.ParentWidth = userX;
+            dlg.ParentHeight = userY;
+            
+            int tempx = userX;
+            int tempy = userY;
+
+
+            if (DialogResult.OK == dlg.ShowDialog())
+            {
+               
+
+                userX = (int)dlg.ParentWidth;
+                userY = (int)dlg.ParentHeight;
+                interval = (int)dlg.Interval;
+                if (tempx != userX)
+                {
+                    universe = null;
+                    universe = new bool[userX, userY];
+                    scratchpad = null;
+                    scratchpad = new bool[userX, userY];
+                }
+                if (tempy != userY)
+                {
+                    universe = null;
+                    universe = new bool[userX, userY];
+                    scratchpad = null;
+                    scratchpad = new bool[userX, userY];
+                }
+
+                if (interval == 0)
+                {
+                    interval = 1;
+                }
+                timer.Interval = interval;
+                IntervalStatusLabel.Text = "Interval: " + interval.ToString();
+            }
+
             graphicsPanel1.Invalidate();
         }
     }

@@ -16,5 +16,40 @@ namespace Game_Of_Life
         {
             InitializeComponent();
         }
+        public decimal Interval
+        {
+            get
+            {
+                return timerIntervalNumericUpDown.Value;
+            }
+            set
+            {
+                timerIntervalNumericUpDown.Value = value;
+            }
+        }
+
+        public decimal ParentWidth
+        {
+            get
+            {
+                return widthUniverseNumericUpDown.Value;
+            }
+            set
+            {
+                widthUniverseNumericUpDown.Value = value;
+            }
+        }
+
+        public decimal ParentHeight
+        {
+            get
+            {
+                return heightUniverseNumericUpDown.Value;
+            }
+            set
+            {
+                heightUniverseNumericUpDown.Value = value;
+            }
+        }
     }
 }
