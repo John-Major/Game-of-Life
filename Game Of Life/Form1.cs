@@ -1165,6 +1165,7 @@ namespace Game_Of_Life
         #endregion
 
         #region StartPauseNextButtons
+        //Start Button
         private void StartButton_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
@@ -1174,6 +1175,7 @@ namespace Game_Of_Life
             //graphicsPanel1.Invalidate();
         }
 
+        //Pause Button
         private void PauseButton_Click(object sender, EventArgs e)
         {
             timer.Enabled = false;
@@ -1181,6 +1183,7 @@ namespace Game_Of_Life
             PauseButton.Image = Game_Of_Life.Properties.Resources.PauseGray;
         }
 
+        //Next Button
         private void NextButton_Click(object sender, EventArgs e)
         {
             if (isFinite)
@@ -1196,6 +1199,8 @@ namespace Game_Of_Life
         #endregion
 
         #region ColorOptions
+
+        //Background Color options
         private void backgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -1209,6 +1214,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Grid Color Options
         private void gridColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -1222,6 +1228,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Cell Color Options
         private void livingCellsColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -1235,6 +1242,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Shortcut Background Options
         private void backgroundColorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -1248,6 +1256,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Shortcut Background Options
         private void gridColorToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -1261,6 +1270,7 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        //Shortcut Cell Color Options
         private void livingCellColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -1277,9 +1287,12 @@ namespace Game_Of_Life
         #endregion
 
         #region SeedOptions
+
+        //Randomize universe from given seed
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+            //reset starting images and timer
             timer.Enabled = false;
             StartButton.Image = Game_Of_Life.Properties.Resources.Start;
             PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
@@ -1287,14 +1300,10 @@ namespace Game_Of_Life
 
             ModalDialog dlg = new ModalDialog();
 
-            
-
             if (DialogResult.OK == dlg.ShowDialog())
             {
+                //reset universe
                 int tempDead = 0;
-                
-                
-
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     for (int y = 0; y < universe.GetLength(1); y++)
@@ -1306,11 +1315,10 @@ namespace Game_Of_Life
                 }
                 randomSeed = dlg.Seed;
                 SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
-                
 
                 Random seededRand = new Random((int)randomSeed);
 
-
+                //populate universe based on seed
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     for (int y = 0; y < universe.GetLength(1); y++)
@@ -1347,9 +1355,11 @@ namespace Game_Of_Life
         //Randomize universe from current seed
         private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //keep track of dead cells
             int tempDead = 0;
-           
 
+
+            //reset universe
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -1365,7 +1375,7 @@ namespace Game_Of_Life
             SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
 
             
-
+            //populate universe from seed
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -1403,6 +1413,7 @@ namespace Game_Of_Life
         {
             int tempDead = 0;
 
+            //reset universe
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -1419,6 +1430,7 @@ namespace Game_Of_Life
             SeedStatusLabel.Text = "Seed: " + randomTime.ToString();
             randomSeed = randomTime;
 
+            //populate universe based on seed
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -1628,6 +1640,7 @@ namespace Game_Of_Life
             this.Close();
         }
 
+        //save settings when form is closed
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
