@@ -64,6 +64,7 @@ namespace Game_Of_Life
             IntervalStatusLabel.Text = "Interval: " + timer.Interval.ToString();
 
             //Starting HUD and making it transparent
+            headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
             GenerationsLabel.BackColor = System.Drawing.Color.Transparent;
             BoundaryTypeLabel.BackColor = System.Drawing.Color.Transparent;
             CellCountLabel.BackColor = System.Drawing.Color.Transparent;
@@ -73,6 +74,13 @@ namespace Game_Of_Life
             BoundaryTypeLabel.ForeColor = Color.Blue;
             CellCountLabel.ForeColor = Color.Blue;
             UniverseSizeLabel.ForeColor = Color.Blue;
+
+            //Starting variables for Grid
+            GridToggleView.Image = Properties.Resources.CheckMark;
+            //Starting Variables for Neighbor count
+            NeighborCountView.Image = Properties.Resources.CheckMark;
+
+
         }
 
         #region Generations
@@ -319,8 +327,12 @@ namespace Game_Of_Life
             float cellHeight = (float)graphicsPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
             // A Pen for drawing the grid lines (color, width)
+            
             Pen gridPen = new Pen(gridColor, 1);
-
+            if (!Grid_toggle)
+            {
+                gridPen.Color = graphicsPanel1.BackColor;
+            }
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
 
@@ -350,21 +362,33 @@ namespace Game_Of_Life
                         cellRect.Width = cellWidth;
                         cellRect.Height = cellHeight;
 
-                        // Fill the cell with a brush if alive
-                        if (universe[x, y] == true)
+                        // Fill the cell with a brush if alive 
+                        // Also checks if neighbor toggle is on
+                        if (Neighbor_toggle)
                         {
-                            e.Graphics.FillRectangle(cellBrush, cellRect);
-                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
-                            if (CountNeighborsFinite(x, y) != 0)
-                                e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
+                            if (universe[x, y] == true)
+                            {
+                                e.Graphics.FillRectangle(cellBrush, cellRect);
+                                //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                                if (CountNeighborsFinite(x, y) != 0)
+                                    e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
 
-                        }
-                        else
+                            }
+                            else
+                            {
+                                //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                                if (CountNeighborsFinite(x, y) != 0)
+                                    e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                            }
+                        } else
                         {
-                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
-                            if (CountNeighborsFinite(x, y) != 0)
-                                e.Graphics.DrawString(CountNeighborsFinite(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                            if (universe[x,y] == true)
+                            {
+                                e.Graphics.FillRectangle(cellBrush, cellRect);
+                            }
                         }
+                        
+                        
 
                         // Outline the cell with a pen
                         e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
@@ -1364,7 +1388,7 @@ namespace Game_Of_Life
         {
             if (HUD_toggle)
             {
-                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
+                headsUpDisplayToolStripMenuItem.Image = null;
                 GenerationsLabel.Visible = false;
                 CellCountLabel.Visible = false;
                 BoundaryTypeLabel.Visible = false;
@@ -1373,7 +1397,7 @@ namespace Game_Of_Life
             }
             else
             {
-                headsUpDisplayToolStripMenuItem.Image = null;
+                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
                 GenerationsLabel.Visible = true;
                 CellCountLabel.Visible = true;
                 BoundaryTypeLabel.Visible = true;
@@ -1390,21 +1414,15 @@ namespace Game_Of_Life
         {
             if (Grid_toggle)
             {
-                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
-                GenerationsLabel.Visible = false;
-                CellCountLabel.Visible = false;
-                BoundaryTypeLabel.Visible = false;
-                UniverseSizeLabel.Visible = false;
-                HUD_toggle = !HUD_toggle;
+                GridToggleView.Image = null;
+                
+                Grid_toggle = !Grid_toggle;
             }
             else
             {
-                headsUpDisplayToolStripMenuItem.Image = null;
-                GenerationsLabel.Visible = true;
-                CellCountLabel.Visible = true;
-                BoundaryTypeLabel.Visible = true;
-                UniverseSizeLabel.Visible = true;
-                HUD_toggle = !HUD_toggle;
+                GridToggleView.Image = Properties.Resources.CheckMark;
+                
+                Grid_toggle = !Grid_toggle;
             }
             graphicsPanel1.Invalidate();
         }
@@ -1414,21 +1432,15 @@ namespace Game_Of_Life
         {
             if (Neighbor_toggle)
             {
-                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
-                GenerationsLabel.Visible = false;
-                CellCountLabel.Visible = false;
-                BoundaryTypeLabel.Visible = false;
-                UniverseSizeLabel.Visible = false;
-                HUD_toggle = !HUD_toggle;
+                NeighborCountView.Image = null;
+                
+                Neighbor_toggle = !Neighbor_toggle;
             }
             else
             {
-                headsUpDisplayToolStripMenuItem.Image = null;
-                GenerationsLabel.Visible = true;
-                CellCountLabel.Visible = true;
-                BoundaryTypeLabel.Visible = true;
-                UniverseSizeLabel.Visible = true;
-                HUD_toggle = !HUD_toggle;
+                NeighborCountView.Image = Properties.Resources.CheckMark;
+                
+                Neighbor_toggle = !Neighbor_toggle;
             }
             graphicsPanel1.Invalidate();
         }
