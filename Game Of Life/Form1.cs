@@ -62,7 +62,7 @@ namespace Game_Of_Life
             IntervalStatusLabel.Text = "Interval: " + timer.Interval.ToString();
 
             //Starting HUD and making it transparent
-            headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
+            headsUpDisplayToolStripMenuItem.Checked = true;
             GenerationsLabel.BackColor = System.Drawing.Color.Transparent;
             BoundaryTypeLabel.BackColor = System.Drawing.Color.Transparent;
             CellCountLabel.BackColor = System.Drawing.Color.Transparent;
@@ -75,12 +75,12 @@ namespace Game_Of_Life
             UniverseSizeLabel.ForeColor = Color.Blue;
 
             //Starting Image for Grid
-            GridToggleView.Image = Properties.Resources.CheckMark;
+            GridToggleView.Checked = true;
             //Starting Image for Neighbor count
-            NeighborCountView.Image = Properties.Resources.CheckMark;
+            NeighborCountView.Checked = true;
 
             //Starting Image for Finite
-            FiniteViewToggle.Image = Properties.Resources.CheckMark;
+            FiniteViewToggle.Checked = true;
 
 
         }
@@ -429,21 +429,31 @@ namespace Game_Of_Life
                         cellRect.Width = cellWidth;
                         cellRect.Height = cellHeight;
 
-                        // Fill the cell with a brush if alive
-                        if (universe[x, y] == true)
+                        if (Neighbor_toggle)
                         {
-                            e.Graphics.FillRectangle(cellBrush, cellRect);
-                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
-                            if (CountNeighborsFinite(x, y) != 0)
-                                e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
+                            // Fill the cell with a brush if alive
+                            if (universe[x, y] == true)
+                            {
+                                e.Graphics.FillRectangle(cellBrush, cellRect);
+                                //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                                if (CountNeighborsFinite(x, y) != 0)
+                                    e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Red, cellRect, stringFormat);
 
-                        }
-                        else
+                            }
+                            else
+                            {
+                                //puts number of neighbors in center of rectangle if there are more than 0 neighbors
+                                if (CountNeighborsFinite(x, y) != 0)
+                                    e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                            }
+                        } else
                         {
-                            //puts number of neighbors in center of rectangle if there are more than 0 neighbors
-                            if (CountNeighborsFinite(x, y) != 0)
-                                e.Graphics.DrawString(CountNeighborsToroidal(x, y).ToString(), font, Brushes.Black, cellRect, stringFormat);
+                            if (universe[x, y] == true)
+                            {
+                                e.Graphics.FillRectangle(cellBrush, cellRect);
+                            }
                         }
+                        
 
                         // Outline the cell with a pen
                         e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
@@ -1295,7 +1305,7 @@ namespace Game_Of_Life
                 {
                     for (int y = 0; y < universe.GetLength(1); y++)
                     {
-                        if (seededRand.Next() % 2 == 0)
+                        if (seededRand.Next(0,3) == 0)
                         {
                             universe[x, y] = true;
                         }
@@ -1350,7 +1360,7 @@ namespace Game_Of_Life
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
                 {
-                    if (seededRand.Next() % 2 == 0)
+                    if (seededRand.Next(0, 3) == 0)
                     {
                         universe[x, y] = true;
                     }
@@ -1403,7 +1413,7 @@ namespace Game_Of_Life
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
                 {
-                    if (seededRand.Next() % 2 == 0)
+                    if (seededRand.Next(0, 3) == 0)
                     {
                         universe[x, y] = true;
                     }
@@ -1438,7 +1448,7 @@ namespace Game_Of_Life
         {
             if (HUD_toggle)
             {
-                headsUpDisplayToolStripMenuItem.Image = null;
+                headsUpDisplayToolStripMenuItem.Checked = false;
                 GenerationsLabel.Visible = false;
                 CellCountLabel.Visible = false;
                 BoundaryTypeLabel.Visible = false;
@@ -1447,7 +1457,7 @@ namespace Game_Of_Life
             }
             else
             {
-                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
+                headsUpDisplayToolStripMenuItem.Checked = true;
                 GenerationsLabel.Visible = true;
                 CellCountLabel.Visible = true;
                 BoundaryTypeLabel.Visible = true;
@@ -1464,13 +1474,13 @@ namespace Game_Of_Life
         {
             if (Grid_toggle)
             {
-                GridToggleView.Image = null;
+                GridToggleView.Checked = false;
                 
                 Grid_toggle = !Grid_toggle;
             }
             else
             {
-                GridToggleView.Image = Properties.Resources.CheckMark;
+                GridToggleView.Checked = true;
                 
                 Grid_toggle = !Grid_toggle;
             }
@@ -1482,13 +1492,13 @@ namespace Game_Of_Life
         {
             if (Neighbor_toggle)
             {
-                NeighborCountView.Image = null;
+                NeighborCountView.Checked = false;
                 
                 Neighbor_toggle = !Neighbor_toggle;
             }
             else
             {
-                NeighborCountView.Image = Properties.Resources.CheckMark;
+                NeighborCountView.Checked = true;
                 
                 Neighbor_toggle = !Neighbor_toggle;
             }
@@ -1501,8 +1511,8 @@ namespace Game_Of_Life
         {
             isFinite = true;
 
-            FiniteViewToggle.Image = Properties.Resources.CheckMark;
-            ToroidalViewToggle.Image = null;
+            FiniteViewToggle.Checked = true;
+            ToroidalViewToggle.Checked = false;
             BoundaryTypeLabel.Text = "Boundary Type: Finite";
             graphicsPanel1.Invalidate();
         }
@@ -1512,8 +1522,8 @@ namespace Game_Of_Life
         {
             isFinite = false;
 
-            ToroidalViewToggle.Image = Properties.Resources.CheckMark;
-            FiniteViewToggle.Image = null;
+            ToroidalViewToggle.Checked = true;
+            FiniteViewToggle.Checked = false;
             BoundaryTypeLabel.Text = "Boundary Type: Toroidal";
             graphicsPanel1.Invalidate();
         }
