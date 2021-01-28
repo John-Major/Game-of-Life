@@ -1196,13 +1196,16 @@ namespace Game_Of_Life
                 CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
 
                 graphicsPanel1.Invalidate();
-                statusStrip1.Invalidate();
+                
             }
         }
 
         //Randomize universe from current seed
         private void fromCurrentSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int tempDead = 0;
+           
+
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -1217,6 +1220,7 @@ namespace Game_Of_Life
             randomSeed = seededRand.Next(0, 1000);
             SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
 
+            
 
             for (int x = 0; x < universe.GetLength(0); x++)
             {
@@ -1229,12 +1233,32 @@ namespace Game_Of_Life
                 }
             }
 
+            //count number alive in new universe
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    if (universe[x, y] == false)
+                    {
+                        tempDead++;
+                    }
+                }
+            }
+
+            GenerationsLabel.Text = "Generations: " + generations.ToString();
+            numAlive = userX * userY - tempDead;
+            AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+            CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
+            
             graphicsPanel1.Invalidate();
+            
         }
 
         //Randomize Universe based on time in miliseconds
         private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            int tempDead = 0;
+
             for (int x = 0; x < universe.GetLength(0); x++)
             {
                 for (int y = 0; y < universe.GetLength(1); y++)
@@ -1261,6 +1285,24 @@ namespace Game_Of_Life
                     }
                 }
             }
+
+            //count number alive in new universe
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    if (universe[x, y] == false)
+                    {
+                        tempDead++;
+                    }
+                }
+            }
+
+            GenerationsLabel.Text = "Generations: " + generations.ToString();
+            numAlive = userX * userY - tempDead;
+            AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+            CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
+
             graphicsPanel1.Invalidate();
         }
 
