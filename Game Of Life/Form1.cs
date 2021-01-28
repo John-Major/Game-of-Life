@@ -323,6 +323,7 @@ namespace Game_Of_Life
             graphicsPanel1.BackColor = Color.White;
             gridColor = Color.Black;
             cellColor = Color.Gray;
+            SeedStatusLabel.Text = "Seed: ";
 
             universe = null;
             universe = (bool[,])Array.CreateInstance(typeof(bool), userX, userY);
@@ -584,6 +585,7 @@ namespace Game_Of_Life
             graphicsPanel1.BackColor = Color.White;
             gridColor = Color.Black;
             cellColor = Color.Gray;
+            SeedStatusLabel.Text = "Seed: ";
 
             StartButton.Image = Game_Of_Life.Properties.Resources.Start;
             PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
@@ -1038,8 +1040,10 @@ namespace Game_Of_Life
 
                 }
             }
-            SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
+            
             Random seededRand = new Random((int)randomSeed);
+            randomSeed = seededRand.Next(0, 1000);
+            SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
 
 
             for (int x = 0; x < universe.GetLength(0); x++)
@@ -1072,6 +1076,7 @@ namespace Game_Of_Life
             int randomTime = (int)DateTime.Now.Millisecond;
             Random seededRand = new Random(randomTime);
             SeedStatusLabel.Text = "Seed: " + randomTime.ToString();
+            randomSeed = randomTime;
 
             for (int x = 0; x < universe.GetLength(0); x++)
             {
