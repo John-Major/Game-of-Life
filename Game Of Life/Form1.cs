@@ -52,7 +52,7 @@ namespace Game_Of_Life
 
             //Starting status labels
             IntervalStatusLabel.Text = "Interval: " + timer.Interval.ToString();
-            SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
+            //SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
 
         }
 
@@ -1053,6 +1053,36 @@ namespace Game_Of_Life
                 }
             }
 
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fromTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+
+                    universe[x, y] = false;
+
+                }
+            }
+
+            Random rand = new Random();
+            int randomTime = (int)DateTime.Now.Millisecond;
+            Random seededRand = new Random(randomTime);
+            SeedStatusLabel.Text = "Seed: " + randomTime.ToString();
+
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    if (seededRand.Next() % 2 == 0)
+                    {
+                        universe[x, y] = true;
+                    }
+                }
+            }
             graphicsPanel1.Invalidate();
         }
     }

@@ -203,7 +203,7 @@ namespace Game_Of_Life
             this.gridColorToolStripMenuItem1,
             this.livingCellColorToolStripMenuItem});
             this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
-            this.colorsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.colorsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.colorsToolStripMenuItem.Text = "Colors";
             // 
             // backgroundColorToolStripMenuItem1
@@ -230,7 +230,7 @@ namespace Game_Of_Life
             // optionsMenuItem
             // 
             this.optionsMenuItem.Name = "optionsMenuItem";
-            this.optionsMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.optionsMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsMenuItem.Text = "Options";
             this.optionsMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
@@ -263,6 +263,7 @@ namespace Game_Of_Life
             this.fromTimeToolStripMenuItem.Name = "fromTimeToolStripMenuItem";
             this.fromTimeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fromTimeToolStripMenuItem.Text = "From Time";
+            this.fromTimeToolStripMenuItem.Click += new System.EventHandler(this.fromTimeToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 

@@ -80,8 +80,8 @@ namespace Game_Of_Life
             // 
             this.SeedNumericUpDown.Location = new System.Drawing.Point(96, 56);
             this.SeedNumericUpDown.Maximum = new decimal(new int[] {
-            1000,
-            0,
+            1215752192,
+            23,
             0,
             0});
             this.SeedNumericUpDown.Name = "SeedNumericUpDown";
