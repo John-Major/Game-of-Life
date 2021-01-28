@@ -13,7 +13,9 @@ namespace Game_Of_Life
         int userY = 20;
         bool[,] universe = new bool[20, 20];
         bool[,] scratchpad = new bool[20, 20];
+        bool isFinite = true;
 
+        //Variables for cells count
         int numAlive = 0;
 
         //Variables for seeds
@@ -21,27 +23,27 @@ namespace Game_Of_Life
 
         //Variables for options
         int interval = 500;
-       
+        bool isChecked = false;
+
+        //Variables for view
+        bool HUD_toggle = true;
 
         //checking if file has been saved before
         bool savedAs = false;
         string fileName = null;
 
         // Drawing colors
-        //Change these based on user input from dialog box
         Color gridColor = Color.Black;
         Color cellColor = Color.Gray;
 
-        //Color numberColor = Color.Black;
-        //numberColor = white on button click
-
+       
         // The Timer class
         Timer timer = new Timer();
 
         // Generation count
         int generations = 0;
 
-        bool keepPlaying = false;
+        
 
         public Form1()
         {
@@ -56,12 +58,22 @@ namespace Game_Of_Life
 
             //Starting status labels
             IntervalStatusLabel.Text = "Interval: " + timer.Interval.ToString();
-            //SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
 
+            //Starting HUD and making it transparent
+            GenerationsLabel.BackColor = System.Drawing.Color.Transparent;
+            BoundaryTypeLabel.BackColor = System.Drawing.Color.Transparent;
+            CellCountLabel.BackColor = System.Drawing.Color.Transparent;
+            UniverseSizeLabel.BackColor = System.Drawing.Color.Transparent;
+
+            GenerationsLabel.ForeColor = Color.Blue;
+            BoundaryTypeLabel.ForeColor = Color.Blue;
+            CellCountLabel.ForeColor = Color.Blue;
+            UniverseSizeLabel.ForeColor = Color.Blue;
         }
 
+        #region Generations
         // Calculate the next generation of cells
-        private void NextGeneration()
+        private void NextGenerationFinite()
         {
             //iterate through universe
             //apply rules of game of life
@@ -86,7 +98,7 @@ namespace Game_Of_Life
                     }
                 }
             }
-            numAlive = userX*userY - tempDead;
+            numAlive = userX * userY - tempDead;
             AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
             for (int x = 0; x < universe.GetLength(0); x++)
             {
@@ -123,10 +135,79 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        private void NextGenerationTorodial()
+        {
+            //iterate through universe
+            //apply rules of game of life
+            //turn cells off etc
+
+            //reset the scratchpad
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    scratchpad[x, y] = false;
+                }
+            }
+            int tempDead = 0;
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    if (universe[x, y] == false)
+                    {
+                        tempDead++;
+                    }
+                }
+            }
+            numAlive = userX * userY - tempDead;
+            AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+            for (int x = 0; x < universe.GetLength(0); x++)
+            {
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    int numNeighbors = CountNeighborsToroidal(x, y);
+                    if (numNeighbors < 2 || numNeighbors > 3)
+                    {
+                        scratchpad[x, y] = false;
+
+                    }
+                    if ((numNeighbors == 2 || numNeighbors == 3) && universe[x, y] == true)
+                    {
+                        scratchpad[x, y] = true;
+                    }
+                    if (numNeighbors == 3 && universe[x, y] == false)
+                    {
+                        scratchpad[x, y] = true;
+                    }
+                }
+            }
+
+            bool[,] temp = universe;
+            universe = scratchpad;
+            scratchpad = temp;
+
+
+
+            // Increment generation count
+            generations++;
+
+            // Update status strip generations
+            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            graphicsPanel1.Invalidate();
+        }
+
         // The event called by the timer every Interval milliseconds.
         private void Timer_Tick(object sender, EventArgs e)
         {
-            NextGeneration();
+            if (isFinite)
+            {
+                NextGenerationFinite();
+            } else
+            {
+                NextGenerationTorodial();
+            }
+            
         }
 
         //checks the surrounding cells to see how many neighbors a cell has in a finate universe
@@ -218,6 +299,9 @@ namespace Game_Of_Life
             return count;
         }
 
+        #endregion
+
+        #region GraphicsPanel
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             // Calculate the width and height of each cell in pixels
@@ -301,26 +385,29 @@ namespace Game_Of_Life
                 // Toggle the cell's state
                 int intX = (int)floatX;
                 int intY = (int)floatY;
-                
-                if(universe[intX, intY] = !universe[intX, intY])
+
+                if (universe[intX, intY] = !universe[intX, intY])
                 {
                     numAlive++;
                     AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
-                } else
+                }
+                else
                 {
-                    if(numAlive > 0)
+                    if (numAlive > 0)
                     {
                         numAlive--;
                         AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
                     }
-                    
+
                 }
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
             }
         }
+        #endregion
 
+        #region NewOpenSave
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //change background back to white
@@ -334,7 +421,7 @@ namespace Game_Of_Life
 
             generations = 0;
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-            AliveStatusLabel.Text= "Alive: 0";
+            AliveStatusLabel.Text = "Alive: 0";
 
             timer.Enabled = false;
 
@@ -349,6 +436,39 @@ namespace Game_Of_Life
                     graphicsPanel1.Invalidate();
                 }
             }
+        }
+
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            //change background back to white
+            graphicsPanel1.BackColor = Color.White;
+            gridColor = Color.Black;
+            cellColor = Color.Gray;
+            SeedStatusLabel.Text = "Seed: ";
+
+            StartButton.Image = Game_Of_Life.Properties.Resources.Start;
+            PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
+            universe = null;
+            universe = (bool[,])Array.CreateInstance(typeof(bool), userX, userY);
+
+            generations = 0;
+            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
+            AliveStatusLabel.Text = "Alive: 0";
+
+            timer.Enabled = false;
+
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                // Iterate through the universe in the x, left to right
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    universe[x, y] = false; // turn cells off when new is clicked
+
+                    //repaint window correctly
+                    graphicsPanel1.Invalidate();
+                }
+            }
+
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -583,38 +703,7 @@ namespace Game_Of_Life
             }
         }
 
-        private void newToolStripButton_Click(object sender, EventArgs e)
-        {
-            //change background back to white
-            graphicsPanel1.BackColor = Color.White;
-            gridColor = Color.Black;
-            cellColor = Color.Gray;
-            SeedStatusLabel.Text = "Seed: ";
-
-            StartButton.Image = Game_Of_Life.Properties.Resources.Start;
-            PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
-            universe = null;
-            universe = (bool[,])Array.CreateInstance(typeof(bool), userX, userY);
-
-            generations = 0;
-            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-            AliveStatusLabel.Text = "Alive: 0";
-
-            timer.Enabled = false;
-
-            for (int y = 0; y < universe.GetLength(1); y++)
-            {
-                // Iterate through the universe in the x, left to right
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    universe[x, y] = false; // turn cells off when new is clicked
-
-                    //repaint window correctly
-                    graphicsPanel1.Invalidate();
-                }
-            }
-
-        }
+       
 
         private void openToolStripButton_Click(object sender, EventArgs e)
         {
@@ -877,6 +966,9 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
+        #endregion
+
+        #region StartPauseNextButtons
         private void StartButton_Click(object sender, EventArgs e)
         {
             timer.Enabled = true;
@@ -891,16 +983,23 @@ namespace Game_Of_Life
             timer.Enabled = false;
             StartButton.Image = Game_Of_Life.Properties.Resources.Start;
             PauseButton.Image = Game_Of_Life.Properties.Resources.PauseGray;
-
-            keepPlaying = false;
         }
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            NextGeneration();
+            if (isFinite)
+            {
+                NextGenerationFinite();
+            } else
+            {
+                NextGenerationTorodial();
+            }
+            
             graphicsPanel1.Invalidate();
         }
+        #endregion
 
+        #region ColorOptions
         private void backgroundColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog dlg = new ColorDialog();
@@ -979,15 +1078,9 @@ namespace Game_Of_Life
             graphicsPanel1.Invalidate();
         }
 
-      
+        #endregion
 
-        private void headsUpDisplayToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        
-
+        #region SeedOptions
         private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -1004,9 +1097,9 @@ namespace Game_Of_Life
                 {
                     for (int y = 0; y < universe.GetLength(1); y++)
                     {
-                        
+
                         universe[x, y] = false;
-                        
+
                     }
                 }
                 randomSeed = dlg.Seed;
@@ -1040,7 +1133,7 @@ namespace Game_Of_Life
 
                 }
             }
-            
+
             Random seededRand = new Random((int)randomSeed);
             randomSeed = seededRand.Next(0, 1000);
             SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
@@ -1090,9 +1183,12 @@ namespace Game_Of_Life
             }
             graphicsPanel1.Invalidate();
         }
+
+        #endregion 
+
         private void optionsMenu_Click(object sender, EventArgs e)
         {
-            
+
             timer.Enabled = false;
             StartButton.Image = Game_Of_Life.Properties.Resources.Start;
             PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
@@ -1101,14 +1197,14 @@ namespace Game_Of_Life
             dlg.Interval = interval;
             dlg.ParentWidth = userX;
             dlg.ParentHeight = userY;
-            
+
             int tempx = userX;
             int tempy = userY;
 
 
             if (DialogResult.OK == dlg.ShowDialog())
             {
-               
+
 
                 userX = (int)dlg.ParentWidth;
                 userY = (int)dlg.ParentHeight;
@@ -1137,6 +1233,30 @@ namespace Game_Of_Life
             }
 
             graphicsPanel1.Invalidate();
+        }
+
+        private void headsUpDisplayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (HUD_toggle)
+            {
+                headsUpDisplayToolStripMenuItem.Image = Properties.Resources.CheckMark;
+                GenerationsLabel.Visible = false;
+                CellCountLabel.Visible = false;
+                BoundaryTypeLabel.Visible = false;
+                UniverseSizeLabel.Visible = false;
+                HUD_toggle = !HUD_toggle;
+            }
+            else
+            {
+                headsUpDisplayToolStripMenuItem.Image = null;
+                GenerationsLabel.Visible = true;
+                CellCountLabel.Visible = true;
+                BoundaryTypeLabel.Visible = true;
+                UniverseSizeLabel.Visible = true;
+                HUD_toggle = !HUD_toggle;
+            }
+
+
         }
     }
 }

@@ -72,10 +72,15 @@ namespace Game_Of_Life
             this.gridColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.livingCellsColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphicsPanel1 = new Game_Of_Life.GraphicsPanel();
+            this.GenerationsLabel = new System.Windows.Forms.Label();
+            this.CellCountLabel = new System.Windows.Forms.Label();
+            this.BoundaryTypeLabel = new System.Windows.Forms.Label();
+            this.UniverseSizeLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.graphicsPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -183,8 +188,8 @@ namespace Game_Of_Life
             // headsUpDisplayToolStripMenuItem
             // 
             this.headsUpDisplayToolStripMenuItem.Name = "headsUpDisplayToolStripMenuItem";
-            this.headsUpDisplayToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
-            this.headsUpDisplayToolStripMenuItem.Text = "Heads Up Display";
+            this.headsUpDisplayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.headsUpDisplayToolStripMenuItem.Text = "HUD";
             this.headsUpDisplayToolStripMenuItem.Click += new System.EventHandler(this.headsUpDisplayToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
@@ -247,21 +252,21 @@ namespace Game_Of_Life
             // fromSeedToolStripMenuItem
             // 
             this.fromSeedToolStripMenuItem.Name = "fromSeedToolStripMenuItem";
-            this.fromSeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fromSeedToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.fromSeedToolStripMenuItem.Text = "From Seed";
             this.fromSeedToolStripMenuItem.Click += new System.EventHandler(this.fromSeedToolStripMenuItem_Click);
             // 
             // fromCurrentSeedToolStripMenuItem
             // 
             this.fromCurrentSeedToolStripMenuItem.Name = "fromCurrentSeedToolStripMenuItem";
-            this.fromCurrentSeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fromCurrentSeedToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.fromCurrentSeedToolStripMenuItem.Text = "From Current Seed";
             this.fromCurrentSeedToolStripMenuItem.Click += new System.EventHandler(this.fromCurrentSeedToolStripMenuItem_Click);
             // 
             // fromTimeToolStripMenuItem
             // 
             this.fromTimeToolStripMenuItem.Name = "fromTimeToolStripMenuItem";
-            this.fromTimeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fromTimeToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.fromTimeToolStripMenuItem.Text = "From Time";
             this.fromTimeToolStripMenuItem.Click += new System.EventHandler(this.fromTimeToolStripMenuItem_Click);
             // 
@@ -419,6 +424,10 @@ namespace Game_Of_Life
             // 
             this.graphicsPanel1.BackColor = System.Drawing.SystemColors.Window;
             this.graphicsPanel1.ContextMenuStrip = this.contextMenuStrip1;
+            this.graphicsPanel1.Controls.Add(this.GenerationsLabel);
+            this.graphicsPanel1.Controls.Add(this.CellCountLabel);
+            this.graphicsPanel1.Controls.Add(this.BoundaryTypeLabel);
+            this.graphicsPanel1.Controls.Add(this.UniverseSizeLabel);
             this.graphicsPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.graphicsPanel1.Location = new System.Drawing.Point(0, 49);
             this.graphicsPanel1.Name = "graphicsPanel1";
@@ -426,6 +435,50 @@ namespace Game_Of_Life
             this.graphicsPanel1.TabIndex = 3;
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
+            // 
+            // GenerationsLabel
+            // 
+            this.GenerationsLabel.AutoSize = true;
+            this.GenerationsLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.GenerationsLabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.GenerationsLabel.Location = new System.Drawing.Point(0, 222);
+            this.GenerationsLabel.Name = "GenerationsLabel";
+            this.GenerationsLabel.Size = new System.Drawing.Size(76, 13);
+            this.GenerationsLabel.TabIndex = 3;
+            this.GenerationsLabel.Text = "Generations: 0";
+            // 
+            // CellCountLabel
+            // 
+            this.CellCountLabel.AutoSize = true;
+            this.CellCountLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.CellCountLabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.CellCountLabel.Location = new System.Drawing.Point(0, 235);
+            this.CellCountLabel.Name = "CellCountLabel";
+            this.CellCountLabel.Size = new System.Drawing.Size(67, 13);
+            this.CellCountLabel.TabIndex = 2;
+            this.CellCountLabel.Text = "Cell Count: 0";
+            // 
+            // BoundaryTypeLabel
+            // 
+            this.BoundaryTypeLabel.AutoSize = true;
+            this.BoundaryTypeLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BoundaryTypeLabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.BoundaryTypeLabel.Location = new System.Drawing.Point(0, 248);
+            this.BoundaryTypeLabel.Name = "BoundaryTypeLabel";
+            this.BoundaryTypeLabel.Size = new System.Drawing.Size(110, 13);
+            this.BoundaryTypeLabel.TabIndex = 1;
+            this.BoundaryTypeLabel.Text = "Boundary Type: Finite";
+            // 
+            // UniverseSizeLabel
+            // 
+            this.UniverseSizeLabel.AutoSize = true;
+            this.UniverseSizeLabel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.UniverseSizeLabel.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.UniverseSizeLabel.Location = new System.Drawing.Point(0, 261);
+            this.UniverseSizeLabel.Name = "UniverseSizeLabel";
+            this.UniverseSizeLabel.Size = new System.Drawing.Size(147, 13);
+            this.UniverseSizeLabel.TabIndex = 0;
+            this.UniverseSizeLabel.Text = "Universe Size: {W: 20, H: 20}";
             // 
             // Form1
             // 
@@ -446,6 +499,8 @@ namespace Game_Of_Life
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.graphicsPanel1.ResumeLayout(false);
+            this.graphicsPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -494,6 +549,10 @@ namespace Game_Of_Life
         private System.Windows.Forms.ToolStripMenuItem fromCurrentSeedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsMenuItem;
+        private System.Windows.Forms.Label GenerationsLabel;
+        private System.Windows.Forms.Label CellCountLabel;
+        private System.Windows.Forms.Label BoundaryTypeLabel;
+        private System.Windows.Forms.Label UniverseSizeLabel;
     }
 }
 
