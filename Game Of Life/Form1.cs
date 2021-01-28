@@ -53,6 +53,14 @@ namespace Game_Of_Life
 
             this.Text = Properties.Resources.AppTitle;
 
+            //read in settings
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            interval = Properties.Settings.Default.Interval;
+            userX = Properties.Settings.Default.UniverseWidth;
+            userY = Properties.Settings.Default.UniverseHeight;
+
             // Setup the timer
             timer.Interval = interval; // milliseconds, ten times a second this gets called
             timer.Tick += Timer_Tick;
@@ -1586,155 +1594,49 @@ namespace Game_Of_Life
         //Resets the settings of the application
         private void ResetSettingsButton_Click(object sender, EventArgs e)
         {
-            //change background back to white
-            graphicsPanel1.BackColor = Color.White;
-            gridColor = Color.Black;
-            cellColor = Color.Gray;
-            SeedStatusLabel.Text = "Seed: ";
-            CellCountLabel.Text = "Cell Count: 0";
+            Properties.Settings.Default.Reset();
 
-            StartButton.Image = Game_Of_Life.Properties.Resources.Start;
-            PauseButton.Image = Game_Of_Life.Properties.Resources.Pause;
-            universe = null;
-            universe = (bool[,])Array.CreateInstance(typeof(bool), userX, userY);
-
-            generations = 0;
-            toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
-            AliveStatusLabel.Text = "Alive: 0";
-
-            timer.Enabled = false;
-
-            for (int y = 0; y < universe.GetLength(1); y++)
-            {
-                // Iterate through the universe in the x, left to right
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    universe[x, y] = false; // turn cells off when new is clicked
-
-                    //repaint window correctly
-                    graphicsPanel1.Invalidate();
-                }
-            }
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            interval = Properties.Settings.Default.Interval;
+            userX = Properties.Settings.Default.UniverseWidth;
+            userY = Properties.Settings.Default.UniverseHeight;
 
         }
         //Reloads the settings of the application
         private void ReloadSettingsButton_Click(object sender, EventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "All Files|*.*|Cells|*.cells";
-            dlg.FilterIndex = 2;
+            Properties.Settings.Default.Reload();
 
-            if (DialogResult.OK == dlg.ShowDialog())
-            {
-                StreamReader reader = new StreamReader(dlg.FileName);
+            graphicsPanel1.BackColor = Properties.Settings.Default.PanelColor;
+            gridColor = Properties.Settings.Default.GridColor;
+            cellColor = Properties.Settings.Default.CellColor;
+            interval = Properties.Settings.Default.Interval;
+            userX = Properties.Settings.Default.UniverseWidth;
+            userY = Properties.Settings.Default.UniverseHeight;
 
-                // Create a couple variables to calculate the width and height
-                // of the data in the file.
-                int maxWidth = 0;
-                int maxHeight = 0;
-
-                // Iterate through the file once to get its size.
-                while (!reader.EndOfStream)
-                {
-                    // Read one row at a time.
-
-                    string row = reader.ReadLine();
-
-
-
-                    // If the row begins with '!' then it is a comment
-                    // and should be ignored.
-                    if (row.ElementAt(0) == '!')
-                    {
-                        string tempString = "";
-                        //grab the seed from the top of the file
-                        for (int i = 1; i < row.Length; i++)
-                        {
-                            tempString += row.ElementAt(i);
-                        }
-                        randomSeed = (decimal)int.Parse(tempString);
-                        SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
-                        continue;
-                    }
-                    // If the row is not a comment then it is a row of cells.
-                    // Increment the maxHeight variable for each row read.
-
-                    maxHeight++;
-                    maxWidth = row.Length;
-                    // Get the length of the current row string
-                    // and adjust the maxWidth variable if necessary.
-                }
-
-                // Resize the current universe and scratchPad
-                // to the width and height of the file calculated above.
-                universe = null;
-                universe = (bool[,])Array.CreateInstance(typeof(bool), maxWidth, maxHeight);
-                // Reset the file pointer back to the beginning of the file.
-                reader.BaseStream.Seek(0, SeekOrigin.Begin);
-
-                // Iterate through the file again, this time reading in the cells.
-                int yPos = 0;
-                while (!reader.EndOfStream)
-                {
-                    // Read one row at a time.
-                    string row = reader.ReadLine();
-
-                    // If the row begins with '!' then
-                    // it is a comment and should be ignored.
-                    if (row.ElementAt(0) == '!')
-                    {
-                        string tempString = "";
-                        //grab the seed from the top of the file
-                        for (int i = 1; i < row.Length; i++)
-                        {
-                            tempString += row.ElementAt(i);
-                        }
-                        randomSeed = (decimal)int.Parse(tempString);
-                        SeedStatusLabel.Text = "Seed: " + randomSeed.ToString();
-                        continue;
-                    }
-                    // If the row is not a comment then 
-                    // it is a row of cells and needs to be iterated through.
-
-                    for (int xPos = 0; xPos < row.Length; xPos++)
-                    {
-                        // If row[xPos] is a 'O' (capital O) then
-                        // set the corresponding cell in the universe to alive.
-                        if (row[xPos] == 'O')
-                        {
-                            universe[xPos, yPos] = true;
-                        }
-                        // If row[xPos] is a '.' (period) then
-                        // set the corresponding cell in the universe to dead.
-                        if (row[xPos] == '.')
-                        {
-                            universe[xPos, yPos] = false;
-                        }
-                    }
-                    yPos++;
-                }
-
-                int tempDead = 0;
-                //Count dead cells
-                for (int x = 0; x < universe.GetLength(0); x++)
-                {
-                    for (int y = 0; y < universe.GetLength(1); y++)
-                    {
-                        if (universe[x, y] == false)
-                        {
-                            tempDead++;
-                        }
-                    }
-                }
-                //Calculate live cells
-                numAlive = userX * userY - tempDead;
-                AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
-                CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
-                // Close the file.
-                reader.Close();
-            }
-            graphicsPanel1.Invalidate();
         }
         #endregion
+
+        //exit the program
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.PanelColor = graphicsPanel1.BackColor;
+            Properties.Settings.Default.GridColor = gridColor;
+            Properties.Settings.Default.CellColor = cellColor;
+            Properties.Settings.Default.Interval = interval;
+            Properties.Settings.Default.UniverseWidth = userX;
+            Properties.Settings.Default.UniverseHeight = userY;
+
+
+
+            Properties.Settings.Default.Save();
+        }
     }
 }
