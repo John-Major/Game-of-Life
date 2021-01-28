@@ -501,6 +501,7 @@ namespace Game_Of_Life
                 {
                     numAlive++;
                     AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+                    CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
                 }
                 else
                 {
@@ -508,6 +509,7 @@ namespace Game_Of_Life
                     {
                         numAlive--;
                         AliveStatusLabel.Text = "Alive: " + numAlive.ToString();
+                        CellCountLabel.Text = "Cell Count: " + numAlive.ToString();
                     }
 
                 }
@@ -1619,6 +1621,7 @@ namespace Game_Of_Life
         }
         #endregion
 
+        #region ExitAndSaveSettings
         //exit the program
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1638,5 +1641,6 @@ namespace Game_Of_Life
 
             Properties.Settings.Default.Save();
         }
+        #endregion
     }
 }
