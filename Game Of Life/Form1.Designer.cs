@@ -49,7 +49,7 @@ namespace Game_Of_Life
             this.backgroundColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.gridColorToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.livingCellColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.optionsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fromCurrentSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -191,7 +191,7 @@ namespace Game_Of_Life
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.colorsToolStripMenuItem,
-            this.toolStripMenuItem1});
+            this.optionsMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.settingsToolStripMenuItem.Text = "Settings";
@@ -227,12 +227,12 @@ namespace Game_Of_Life
             this.livingCellColorToolStripMenuItem.Text = "Living Cell Color";
             this.livingCellColorToolStripMenuItem.Click += new System.EventHandler(this.livingCellColorToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // optionsMenuItem
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem1.Text = "Options";
-            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            this.optionsMenuItem.Name = "optionsMenuItem";
+            this.optionsMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.optionsMenuItem.Text = "Options";
+            this.optionsMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // randomizeToolStripMenuItem
             // 
@@ -491,7 +491,7 @@ namespace Game_Of_Life
         private System.Windows.Forms.ToolStripMenuItem fromSeedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromCurrentSeedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromTimeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem optionsMenuItem;
     }
 }
 
