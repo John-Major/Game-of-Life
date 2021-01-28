@@ -31,6 +31,8 @@ namespace Game_Of_Life
         bool HUD_toggle = true;
         bool Grid_toggle = true;
         bool Neighbor_toggle = true;
+        bool Finite_toggle = true;
+        bool Toroidal_toggle = true;
 
         //checking if file has been saved before
         bool savedAs = false;
@@ -79,6 +81,9 @@ namespace Game_Of_Life
             GridToggleView.Image = Properties.Resources.CheckMark;
             //Starting Variables for Neighbor count
             NeighborCountView.Image = Properties.Resources.CheckMark;
+
+            //Starting Variables for Toroidal and Finite
+            FiniteViewToggle.Image = Properties.Resources.CheckMark;
 
 
         }
@@ -1446,5 +1451,25 @@ namespace Game_Of_Life
         }
 
         #endregion
+
+        private void FiniteViewToggle_Click(object sender, EventArgs e)
+        {
+            isFinite = true;
+
+            FiniteViewToggle.Image = Properties.Resources.CheckMark;
+            ToroidalViewToggle.Image = null;
+            BoundaryTypeLabel.Text = "Boundary Type: Finite";
+            graphicsPanel1.Invalidate();
+        }
+
+        private void ToroidalViewToggle_Click(object sender, EventArgs e)
+        {
+            isFinite = false;
+
+            ToroidalViewToggle.Image = Properties.Resources.CheckMark;
+            FiniteViewToggle.Image = null;
+            BoundaryTypeLabel.Text = "Boundary Type: Toroidal";
+            graphicsPanel1.Invalidate();
+        }
     }
 }

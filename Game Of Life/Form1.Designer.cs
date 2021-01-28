@@ -78,6 +78,8 @@ namespace Game_Of_Life
             this.CellCountLabel = new System.Windows.Forms.Label();
             this.BoundaryTypeLabel = new System.Windows.Forms.Label();
             this.UniverseSizeLabel = new System.Windows.Forms.Label();
+            this.FiniteViewToggle = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToroidalViewToggle = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -184,7 +186,9 @@ namespace Game_Of_Life
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.headsUpDisplayToolStripMenuItem,
             this.GridToggleView,
-            this.NeighborCountView});
+            this.NeighborCountView,
+            this.FiniteViewToggle,
+            this.ToroidalViewToggle});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -498,6 +502,20 @@ namespace Game_Of_Life
             this.UniverseSizeLabel.TabIndex = 0;
             this.UniverseSizeLabel.Text = "Universe Size: {W: 20, H: 20}";
             // 
+            // FiniteViewToggle
+            // 
+            this.FiniteViewToggle.Name = "FiniteViewToggle";
+            this.FiniteViewToggle.Size = new System.Drawing.Size(180, 22);
+            this.FiniteViewToggle.Text = "Finite";
+            this.FiniteViewToggle.Click += new System.EventHandler(this.FiniteViewToggle_Click);
+            // 
+            // ToroidalViewToggle
+            // 
+            this.ToroidalViewToggle.Name = "ToroidalViewToggle";
+            this.ToroidalViewToggle.Size = new System.Drawing.Size(180, 22);
+            this.ToroidalViewToggle.Text = "Toroidal";
+            this.ToroidalViewToggle.Click += new System.EventHandler(this.ToroidalViewToggle_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -573,6 +591,8 @@ namespace Game_Of_Life
         private System.Windows.Forms.Label UniverseSizeLabel;
         private System.Windows.Forms.ToolStripMenuItem GridToggleView;
         private System.Windows.Forms.ToolStripMenuItem NeighborCountView;
+        private System.Windows.Forms.ToolStripMenuItem FiniteViewToggle;
+        private System.Windows.Forms.ToolStripMenuItem ToroidalViewToggle;
     }
 }
 
